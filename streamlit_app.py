@@ -3,7 +3,6 @@ import pandas
 import requests
 import snowflake.connector
 from urllib.error import URLError
-
 streamlit.title('Ruthie\'s New Healthy Diner')
 streamlit.header('Breakfast Menu')
 streamlit.text('🧆 Omega 3, Gluten Free, Blueberry Falafal')
