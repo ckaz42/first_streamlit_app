@@ -20,7 +20,7 @@ streamlit.dataframe(fruits_to_show)
 
 #New Section to display fruityvice api response 
 streamlit.header('Fruityvice Fruit Advice')
-fruit_choice = streamlit.text_input('What fruit would you like to juice?','kiwi')
+fruit_choice = streamlit.text_input('What fruit would you like to dilute?','kiwi')
 streamlit.write('The user entered', fruit_choice)
 
 import requests
@@ -33,6 +33,9 @@ fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
 streamlit.dataframe(fruityvice_normalized)
 import snowflake.connector
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+
+add_my_fruit = streamlit.text_input('What fruit would you like to toot?')
+streamlit.write('The user entered', add_my_fruit + '.')
 my_cur = my_cnx.cursor()
 my_cur.execute("select * from pc_rivery_db.public.fruit_load_list")
 my_data_rows= my_cur.fetchall()
