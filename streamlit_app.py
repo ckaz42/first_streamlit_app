@@ -2,7 +2,7 @@ import streamlit
 import pandas
 import requests
 import snowflake.connector
-# from urllib.error import 'URLError'
+from urllib.error import 'URLError'
 
 
 streamlit.title('Ruthie\'s New Healthy Diner')
@@ -11,7 +11,7 @@ streamlit.text('🧆 Omega 3, Gluten Free, Blueberry Falafal')
 streamlit.text('🍏 Apple Ginger Rocket Smoothie')
 streamlit.text('🍳 Hard-Boiled Free-Range Eggs and organic onions')
 streamlit.text('🥑🍞Avocado Toast')
-streamlit.header('🥝🍑Make Your Own Fruit Smoothie🍌🍉')
+streamlit.header('Make Your Own Fruit Smoothie')
 
 
 my_fruit_list = pandas.read_csv("https://uni-lab-files.s3.us-west-2.amazonaws.com/dabw/fruit_macros.txt")
@@ -44,21 +44,16 @@ try:
 except URLError as e:
   streamlit.error()
 
-  
-  streamlit.stop() 
+streamlit.header("The fruit load list conatins:")
+#snowflalke-related functions
+def get_fruit_load_list():
+    with my_cnx.cursor() as my cur:
+    my_cur.execute("select * from pc_rivery_db.public.fruit_load_list")
+    return my_cur.fetchall()
 
-#streamlit.text(fruityvice_response.json())
-#take the json version and normalize it
-#output it to the screen as a table
-
-
-my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-
-add_my_fruit = streamlit.text_input('What fruit would you like to toot?')
-streamlit.write('The user entered', add_my_fruit + '.')
-my_cur = my_cnx.cursor()
-my_cur.execute("select * from pc_rivery_db.public.fruit_load_list")
-my_data_rows= my_cur.fetchall()
-#streamlit.text("Hello from the Snow:")
-streamlit.header("The fruit load list contains:")
-streamlit.dataframe(my_data_rows)
+# Add a botton to load the fruit
+if streamlit.button('Get Fruit Load List'):
+    my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+    my_data_rows = get_fruit_load_list()
+    streamlit.dataframe(my_data_rows)
+ 
